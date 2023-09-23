@@ -33,9 +33,16 @@ public class EmployeeController : ControllerBase
         return Ok(employees);
     }
 
-    [HttpGet]
-    public ActionResult<Employee> GetSingle()
+    [HttpGet("{id}")]
+    public ActionResult<Employee> GetSingle(int id)
     {
-        return Ok(employees[0]);
+        return Ok(employees.FirstOrDefault(c => c.Id == id));
+    }
+
+    [HttpPost]
+    public ActionResult<List<Employee>> AddEmployee(Employee employee)
+    {
+        employees.Add(employee);
+        return Ok(employees);
     }
 }
