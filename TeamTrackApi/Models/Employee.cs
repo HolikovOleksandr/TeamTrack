@@ -4,27 +4,27 @@ namespace TeamTrackApi.Models;
 
 public class Employee
 {
-    public int Id { get; set; }
+    public int Id { get; set; } = 0;
 
-    public string Name { get; set; } = null!;
+    public string Name { get; set; } = "First";
 
-    public string Surname { get; set; } = null!;
+    public string Surname { get; set; } = "Emplyee";
 
-    public string Position { get; set; } = null!;
+    public string Position { get; set; } = "Employee";
 
-    public DateOnly BirthDate { get; set; }
+    public DateOnly BirthDate { get; set; } = DateOnly.MinValue;
 
-    public string Adress { get; set; } = null!;
+    public string Adress { get; set; } = "Ukraie, Kyiv";
 
-    public string Email { get; set; } = null!;
+    public string Email { get; set; } = "awesome_employee@gmail.com";
 
-    public string PhoneNumber { get; set; } = null!;
+    public string PhoneNumber { get; set; } = "+380 111 111 111";
 
-    public decimal Salary { get; set; }
+    public decimal Salary { get; set; } = 1111111;
 
-    public DateOnly HireDate { get; set; }
+    public DateOnly HireDate { get; set; } = DateOnly.MinValue;
 
-    public DateOnly? LiveDate { get; set; }
+    public DateOnly? LiveDate { get; set; } = null;
 
-    public Departments Department { get; set; }
+    public Departments Department { get; set; } = Departments.First;
 }
