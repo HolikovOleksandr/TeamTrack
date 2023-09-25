@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using TeamTrackApi.Services;
 
 namespace TeamTrackApi.Controllers;
 
@@ -6,43 +7,28 @@ namespace TeamTrackApi.Controllers;
 [Route("api/[controller]")]
 public class EmployeeController : ControllerBase
 {
-    public Employee firstEmployee = new Employee
+    private readonly IEmployeeService _employeeService;
+
+    public EmployeeController(IEmployeeService employeeService)
     {
-        Id = 0,
-        Name = "First",
-        Surname = "Emplyee",
-        Position = "Employee",
-        BirthDate = DateOnly.MinValue,
-        Adress = "Ukraie, Kyiv",
-        Email = "awesome_employee@gmail.com",
-        PhoneNumber = "+380 111 111 111",
-        Salary = 1111111,
-        HireDate = DateOnly.MinValue,
-        LiveDate = null,
-        Department = Departments.First,
-    };
+        _employeeService = employeeService;
 
-    public static List<Employee> employees = new List<Employee>{
-        new Employee(),
-        new Employee{Id = 1, Name = "Second"}
-    };
-
+    }
     [HttpGet("GetAll")]
     public ActionResult<List<Employee>> Get()
     {
-        return Ok(employees);
+        return Ok(_employeeService.GetAllEmployees());
     }
 
     [HttpGet("{id}")]
     public ActionResult<Employee> GetSingle(int id)
     {
-        return Ok(employees.FirstOrDefault(c => c.Id == id));
+        return Ok(_employeeService.GetEmployeeById(id));
     }
 
     [HttpPost]
-    public ActionResult<List<Employee>> AddEmployee(Employee employee)
+    public ActionResult<List<Employee>> AddEmployee(Employee neweEployee)
     {
-        employees.Add(employee);
-        return Ok(employees);
+        return Ok(_employeeService.AddEmployee(neweEployee));
     }
 }
