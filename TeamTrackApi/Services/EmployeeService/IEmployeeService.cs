@@ -2,9 +2,13 @@ namespace TeamTrackApi.Services;
 
 public interface IEmployeeService
 {
-    Task<ServiceResponse<List<Employee>>> GetAllEmployees();
+    Task<ServiceResponse<List<GetEmployeeDto>>> GetAllEmployees();
 
-    Task<ServiceResponse<Employee>> GetEmployeeById(int id);
+    Task<ServiceResponse<GetEmployeeDto>> GetEmployeeById(int id);
 
-    Task<ServiceResponse<List<Employee>>> AddEmployee(Employee newEmployee);
+    Task<ServiceResponse<List<GetEmployeeDto>>> AddEmployee(AddEmployeeDto newEmployee);
+
+    Task<ServiceResponse<GetEmployeeDto>> UpdateEmployee(UpdateEmployeeDto updatedEmployee);
+
+    Task<ServiceResponse<List<GetEmployeeDto>>> DeleteEmployees(int id);
 }

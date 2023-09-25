@@ -1,4 +1,6 @@
 global using TeamTrackApi.Models;
+global using TeamTrackApi.Dtos.Employee;
+global using AutoMapper;
 
 using TeamTrackApi.Services;
 using TeamTrackApi.Services.EmployeeService;
@@ -15,6 +17,7 @@ internal class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
         builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
