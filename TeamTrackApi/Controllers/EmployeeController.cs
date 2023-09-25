@@ -8,27 +8,26 @@ namespace TeamTrackApi.Controllers;
 public class EmployeeController : ControllerBase
 {
     private readonly IEmployeeService _employeeService;
-
     public EmployeeController(IEmployeeService employeeService)
     {
         _employeeService = employeeService;
-
     }
+
     [HttpGet("GetAll")]
-    public ActionResult<List<Employee>> Get()
+    public async Task<ActionResult<List<Employee>>> Get()
     {
-        return Ok(_employeeService.GetAllEmployees());
+        return Ok(await _employeeService.GetAllEmployees());
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Employee> GetSingle(int id)
+    public async Task<ActionResult<Employee>> GetSingle(int id)
     {
-        return Ok(_employeeService.GetEmployeeById(id));
+        return Ok(await _employeeService.GetEmployeeById(id));
     }
 
     [HttpPost]
-    public ActionResult<List<Employee>> AddEmployee(Employee neweEployee)
+    public async Task<ActionResult<List<Employee>>> AddEmployee(Employee neweEployee)
     {
-        return Ok(_employeeService.AddEmployee(neweEployee));
+        return Ok(await _employeeService.AddEmployee(neweEployee));
     }
 }

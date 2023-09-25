@@ -9,18 +9,18 @@ public class EmployeeService : IEmployeeService
         new Employee{Id = 1, Name = "Second"}
     };
 
-    public List<Employee> AddEmployee(Employee newEmployee)
+    public async Task<List<Employee>> AddEmployee(Employee newEmployee)
     {
         employees.Add(newEmployee);
         return employees;
     }
 
-    public List<Employee> GetAllEmployees()
+    public async Task<List<Employee>> GetAllEmployees()
     {
         return employees;
     }
 
-    public Employee GetEmployeeById(int id)
+    public async Task<Employee> GetEmployeeById(int id)
     {
         var employee = employees.FirstOrDefault(c => c.Id == id);
         if (employee is not null) return employee;
