@@ -14,19 +14,19 @@ public class EmployeeController : ControllerBase
     }
 
     [HttpGet("GetAll")]
-    public async Task<ActionResult<List<Employee>>> Get()
+    public async Task<ActionResult<ServiceResponse<List<Employee>>>> Get()
     {
         return Ok(await _employeeService.GetAllEmployees());
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Employee>> GetSingle(int id)
+    public async Task<ActionResult<ServiceResponse<Employee>>> GetSingle(int id)
     {
         return Ok(await _employeeService.GetEmployeeById(id));
     }
 
     [HttpPost]
-    public async Task<ActionResult<List<Employee>>> AddEmployee(Employee neweEployee)
+    public async Task<ActionResult<ServiceResponse<List<Employee>>>> AddEmployee(Employee neweEployee)
     {
         return Ok(await _employeeService.AddEmployee(neweEployee));
     }

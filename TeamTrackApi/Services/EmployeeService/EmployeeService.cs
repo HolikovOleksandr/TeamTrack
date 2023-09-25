@@ -9,22 +9,29 @@ public class EmployeeService : IEmployeeService
         new Employee{Id = 1, Name = "Second"}
     };
 
-    public async Task<List<Employee>> AddEmployee(Employee newEmployee)
+    public async Task<ServiceResponse<List<Employee>>> AddEmployee(Employee newEmployee)
     {
+        var serviceResponse = new ServiceResponse<List<Employee>>();
         employees.Add(newEmployee);
-        return employees;
+        serviceResponse.Data = employees;
+        return serviceResponse;
     }
 
-    public async Task<List<Employee>> GetAllEmployees()
+    public async Task<ServiceResponse<List<Employee>>> GetAllEmployees()
     {
-        return employees;
+        var serviceResponse = new ServiceResponse<List<Employee>>
+        {
+            Data = employees
+        };
+
+        return serviceResponse;
     }
 
-    public async Task<Employee> GetEmployeeById(int id)
+    public async Task<ServiceResponse<Employee>> GetEmployeeById(int id)
     {
+        var serviceResponse = new ServiceResponse<Employee>();
         var employee = employees.FirstOrDefault(c => c.Id == id);
-        if (employee is not null) return employee;
-
-        throw new NullReferenceException($"Employee with id: {id} not found");
+        serviceResponse.Data = employee;
+        return serviceResponse;
     }
 }
