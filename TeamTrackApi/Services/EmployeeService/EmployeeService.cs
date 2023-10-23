@@ -31,6 +31,8 @@ public class EmployeeService : IEmployeeService
             response.Data = _context.Employees
             .Select(e => _mapper.Map<GetEmployeeDto>(e))
             .ToList();
+
+            await _context.SaveChangesAsync();
         }
         catch (Exception exception)
         {
@@ -50,6 +52,7 @@ public class EmployeeService : IEmployeeService
             var employee = await _context.Employees.FirstOrDefaultAsync(c => c.Id == id);
             if (employee is null) throw new Exception($"Employee with Id '{id}' not found");
             _context.Employees.Remove(employee);
+            await _context.SaveChangesAsync();
 
             response.Data = employees.Select(e => _mapper.Map<GetEmployeeDto>(e)).ToList();
         }
@@ -67,6 +70,7 @@ public class EmployeeService : IEmployeeService
         var response = new ServiceResponse<List<GetEmployeeDto>>();
         var dbEmployee = await _context.Employees.ToListAsync();
         response.Data = dbEmployee.Select(e => _mapper.Map<GetEmployeeDto>(e)).ToList();
+        await _context.SaveChangesAsync();
         return response;
     }
 
@@ -75,6 +79,8 @@ public class EmployeeService : IEmployeeService
         var response = new ServiceResponse<GetEmployeeDto>();
         var dbEmployee = await _context.Employees.FirstOrDefaultAsync(e => e.Id == id);
         response.Data = _mapper.Map<GetEmployeeDto>(dbEmployee);
+        await _context.SaveChangesAsync();
+
         return response;
     }
 
