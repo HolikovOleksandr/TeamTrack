@@ -1,4 +1,4 @@
-import 'package:team_track_app/models/departaments.dart';
+import 'package:team_track_app/domain/entities/departaments.dart';
 
 class Employee {
   final int id;
