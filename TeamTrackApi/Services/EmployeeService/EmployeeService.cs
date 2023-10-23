@@ -1,3 +1,5 @@
+using TeamTrackApi.Data;
+
 namespace TeamTrackApi.Services.EmployeeService;
 
 public class EmployeeService : IEmployeeService
@@ -9,67 +11,81 @@ public class EmployeeService : IEmployeeService
     };
 
     private readonly IMapper _mapper;
-    public EmployeeService(IMapper mapper)
+    private readonly DataContext _context;
+
+    public EmployeeService(IMapper mapper, DataContext context)
     {
+        _context = context;
         _mapper = mapper;
     }
 
     public async Task<ServiceResponse<List<GetEmployeeDto>>> AddEmployee(AddEmployeeDto newEmployee)
     {
-        var serviceResponse = new ServiceResponse<List<GetEmployeeDto>>();
-        var employee = _mapper.Map<Employee>(newEmployee);
-        employee.Id = employees.Max(e => e.Id) + 1;
-        employees.Add(employee);
-        serviceResponse.Data = employees.Select(e => _mapper.Map<GetEmployeeDto>(e)).ToList();
-        return serviceResponse;
+        var response = new ServiceResponse<List<GetEmployeeDto>>();
+
+        try
+        {
+            var employee = _mapper.Map<Employee>(newEmployee);
+            await _context.Employees.AddAsync(employee);
+
+            response.Data = _context.Employees
+            .Select(e => _mapper.Map<GetEmployeeDto>(e))
+            .ToList();
+        }
+        catch (Exception exception)
+        {
+            response.Success = false;
+            response.Message = exception.Message;
+        }
+
+        return response;
     }
 
     public async Task<ServiceResponse<List<GetEmployeeDto>>> DeleteEmployees(int id)
     {
-        var serviceResponse = new ServiceResponse<List<GetEmployeeDto>>();
+        var response = new ServiceResponse<List<GetEmployeeDto>>();
 
         try
         {
-            var employee = employees.FirstOrDefault(c => c.Id == id);
+            var employee = await _context.Employees.FirstOrDefaultAsync(c => c.Id == id);
             if (employee is null) throw new Exception($"Employee with Id '{id}' not found");
-            employees.Remove(employee);
+            _context.Employees.Remove(employee);
 
-            serviceResponse.Data = employees.Select(e => _mapper.Map<GetEmployeeDto>(e)).ToList();
+            response.Data = employees.Select(e => _mapper.Map<GetEmployeeDto>(e)).ToList();
         }
-        catch (Exception e)
+        catch (Exception exception)
         {
-            serviceResponse.Success = false;
-            serviceResponse.Message = e.Message;
+            response.Success = false;
+            response.Message = exception.Message;
         }
 
-        return serviceResponse;
+        return response;
     }
 
     public async Task<ServiceResponse<List<GetEmployeeDto>>> GetAllEmployees()
     {
-        var serviceResponse = new ServiceResponse<List<GetEmployeeDto>>
-        {
-            Data = employees.Select(e => _mapper.Map<GetEmployeeDto>(e)).ToList(),
-        };
-
-        return serviceResponse;
+        var response = new ServiceResponse<List<GetEmployeeDto>>();
+        var dbEmployee = await _context.Employees.ToListAsync();
+        response.Data = dbEmployee.Select(e => _mapper.Map<GetEmployeeDto>(e)).ToList();
+        return response;
     }
 
     public async Task<ServiceResponse<GetEmployeeDto>> GetEmployeeById(int id)
     {
-        var serviceResponse = new ServiceResponse<GetEmployeeDto>();
-        var employee = employees.FirstOrDefault(e => e.Id == id);
-        serviceResponse.Data = _mapper.Map<GetEmployeeDto>(employee);
-        return serviceResponse;
+        var response = new ServiceResponse<GetEmployeeDto>();
+        var dbEmployee = await _context.Employees.FirstOrDefaultAsync(e => e.Id == id);
+        response.Data = _mapper.Map<GetEmployeeDto>(dbEmployee);
+        return response;
     }
 
     public async Task<ServiceResponse<GetEmployeeDto>> UpdateEmployee(UpdateEmployeeDto updatedEmployee)
     {
-        var serviceResponse = new ServiceResponse<GetEmployeeDto>();
+        var response = new ServiceResponse<GetEmployeeDto>();
 
         try
         {
-            var employee = employees.FirstOrDefault(e => e.Id == updatedEmployee.Id);
+            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Id == updatedEmployee.Id);
+
             if (employee is null)
             {
                 throw new Exception($"Employee with Id '{updatedEmployee.Id}' not found");
@@ -86,14 +102,16 @@ public class EmployeeService : IEmployeeService
             employee.LiveDate = updatedEmployee.LiveDate;
             employee.Department = updatedEmployee.Department;
 
-            serviceResponse.Data = _mapper.Map<GetEmployeeDto>(employee);
+            _context.Employees.Update(employee);
+            await _context.SaveChangesAsync();
+            response.Data = _mapper.Map<GetEmployeeDto>(employee);
         }
-        catch (Exception ex)
+        catch (Exception exception)
         {
-            serviceResponse.Success = false;
-            serviceResponse.Message = ex.Message;
+            response.Success = false;
+            response.Message = exception.Message;
         }
 
-        return serviceResponse;
+        return response;
     }
 }
