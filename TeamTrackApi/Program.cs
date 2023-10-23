@@ -1,6 +1,7 @@
 global using TeamTrackApi.Models;
 global using TeamTrackApi.Dtos.Employee;
 global using AutoMapper;
+global using Microsoft.EntityFrameworkCore;
 
 using TeamTrackApi.Services;
 using TeamTrackApi.Services.EmployeeService;
