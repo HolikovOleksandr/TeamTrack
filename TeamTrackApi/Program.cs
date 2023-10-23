@@ -5,6 +5,7 @@ global using Microsoft.EntityFrameworkCore;
 
 using TeamTrackApi.Services;
 using TeamTrackApi.Services.EmployeeService;
+using TeamTrackApi.Data;
 
 internal class Program
 {
@@ -13,6 +14,8 @@ internal class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
+        var defaultConnection = builder.Configuration.GetConnectionString("DefaultConnection");
+        builder.Services.AddDbContext<DataContext>(opt => opt.UseSqlServer(defaultConnection));
 
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

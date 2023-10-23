@@ -18,9 +18,9 @@ public class AddEmployeeDto
 
     public decimal Salary { get; set; } = 1111111;
 
-    public DateOnly HireDate { get; set; } = DateOnly.MinValue;
+    public DateTime? HireDate { get; set; } = null;
 
-    public DateOnly? LiveDate { get; set; } = null;
+    public DateTime? LiveDate { get; set; } = null;
 
     public Departments Department { get; set; } = Departments.First;
 }

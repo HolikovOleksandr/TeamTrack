@@ -10,7 +10,7 @@ public class GetEmployeeDto
 
     public string Position { get; set; } = "Employee";
 
-    public DateOnly BirthDate { get; set; } = DateOnly.MinValue;
+    public DateTime? BirthDate { get; set; } = null;
 
     public string Adress { get; set; } = "Ukraie, Kyiv";
 
@@ -20,9 +20,9 @@ public class GetEmployeeDto
 
     public decimal Salary { get; set; } = 1111111;
 
-    public DateOnly HireDate { get; set; } = DateOnly.MinValue;
+    public DateTime? HireDate { get; set; } = null;
 
-    public DateOnly? LiveDate { get; set; } = null;
+    public DateTime? LiveDate { get; set; } = null;
 
     public Departments Department { get; set; } = Departments.First;
 }
