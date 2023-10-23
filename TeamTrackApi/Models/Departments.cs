@@ -5,6 +5,11 @@ namespace TeamTrackApi.Models;
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum Departments
 {
-    First = 1,
-    Second = 2,
+    Design,
+    Candidate,
+    Programmist,
+    ProjactManager,
+    Manager,
+    STO,
+    SMM,
 }
