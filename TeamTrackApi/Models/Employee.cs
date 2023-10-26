@@ -26,5 +26,5 @@ public class Employee
 
     public DateTime? LiveDate { get; set; } = null;
 
-    public Departments Department { get; set; } = Departments.First;
+    public Departments Department { get; set; } = Departments.Design;
 }

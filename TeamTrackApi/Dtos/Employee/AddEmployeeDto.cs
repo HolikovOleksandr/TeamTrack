@@ -8,7 +8,7 @@ public class AddEmployeeDto
 
     public string Position { get; set; } = "Employee";
 
-    public DateOnly BirthDate { get; set; } = DateOnly.MinValue;
+    public DateTime? BirthDate { get; set; } = null;
 
     public string Adress { get; set; } = "Ukraie, Kyiv";
 
@@ -22,5 +22,5 @@ public class AddEmployeeDto
 
     public DateTime? LiveDate { get; set; } = null;
 
-    public Departments Department { get; set; } = Departments.First;
+    public Departments Department { get; set; } = Departments.Design;
 }
