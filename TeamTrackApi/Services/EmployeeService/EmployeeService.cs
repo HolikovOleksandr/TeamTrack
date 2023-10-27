@@ -4,11 +4,7 @@ namespace TeamTrackApi.Services.EmployeeService;
 
 public class EmployeeService : IEmployeeService
 {
-
-    public static List<Employee> employees = new List<Employee>{
-        new Employee(),
-        new Employee{Id = 1, Name = "Second"}
-    };
+    private static readonly List<Employee> Employees = new List<Employee> { };
 
     private readonly IMapper _mapper;
     private readonly DataContext _context;
@@ -49,12 +45,13 @@ public class EmployeeService : IEmployeeService
 
         try
         {
-            var employee = await _context.Employees.FirstOrDefaultAsync(c => c.Id == id);
-            if (employee is null) throw new Exception($"Employee with Id '{id}' not found");
+            var employee = await _context.Employees.FirstOrDefaultAsync(c => c.Id == id)
+                ?? throw new Exception($"Employee with Id '{id}' not found");
+
             _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
 
-            response.Data = employees.Select(e => _mapper.Map<GetEmployeeDto>(e)).ToList();
+            response.Data = Employees.Select(e => _mapper.Map<GetEmployeeDto>(e)).ToList();
         }
         catch (Exception exception)
         {
